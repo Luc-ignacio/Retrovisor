@@ -20,6 +20,6 @@ const isDark = computed({
     <Icon name="tabler:sun-high" class="swap-on" size="24" />
 
     <!-- moon icon -->
-    <Icon name="tabler:moon" class="swap-off" size="24" />
+    <Icon name="tabler:moon-filled" class="swap-off" size="24" />
   </label>
 </template>
