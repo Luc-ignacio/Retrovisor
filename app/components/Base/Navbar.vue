@@ -1,5 +1,5 @@
 <template>
-  <div class="flex p-4 bg-accent text-accent-content">
+  <div class="flex p-4 bg-primary text-primary-content">
     <div class="container mx-auto flex items-center justify-between">
       <div>
         <NuxtLink to="/" class="text-xl font-semibold">
@@ -10,12 +10,8 @@
       <div class="flex items-center gap-2">
         <BaseThemeToggle />
 
-        <a class="btn btn-primary">
-          Sign In With Github
-          <Icon name="tabler:brand-github" size="24" />
-        </a>
+        <AuthButton />
       </div>
     </div>
   </div>
 </template>
-git
