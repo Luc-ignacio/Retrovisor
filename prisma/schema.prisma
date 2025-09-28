@@ -1,0 +1,47 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+  // Note: The file path here is often ignored in favour of the adapter URL, 
+  // but Prisma still expects a value for local development/migrations.
+  url      = "file:./dev.db"
+}
+
+model Location {
+  id          Int           @id @default(autoincrement())
+  name        String
+  slug        String        @unique
+  description String
+  lat         Int
+  long        Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt()
+  LocationLog LocationLog[]
+}
+
+model LocationLog {
+  id               Int                @id @default(autoincrement())
+  name             String
+  description      String?
+  startedAt        DateTime
+  endedAt          DateTime
+  lat              Int
+  long             Int
+  locationId       Int
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now()) @updatedAt()
+  Location         Location           @relation(fields: [locationId], references: [id])
+  LocationLogImage LocationLogImage[]
+}
+
+model LocationLogImage {
+  id            Int         @id @default(autoincrement())
+  key           String
+  locationLogId Int
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @default(now()) @updatedAt()
+  LocationLog   LocationLog @relation(fields: [locationLogId], references: [id])
+}
