@@ -18,7 +18,7 @@ model Location {
   lat         Int
   long        Int
   createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @default(now()) @updatedAt()
+  updatedAt   DateTime      @default(now()) @updatedAt
   LocationLog LocationLog[]
 }
 
@@ -32,7 +32,7 @@ model LocationLog {
   long             Int
   locationId       Int
   createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @default(now()) @updatedAt()
+  updatedAt        DateTime           @default(now()) @updatedAt
   Location         Location           @relation(fields: [locationId], references: [id])
   LocationLogImage LocationLogImage[]
 }
@@ -42,6 +42,60 @@ model LocationLogImage {
   key           String
   locationLogId Int
   createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @default(now()) @updatedAt()
+  updatedAt     DateTime    @default(now()) @updatedAt
   LocationLog   LocationLog @relation(fields: [locationLogId], references: [id])
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+
+  @@unique([email])
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
 }
