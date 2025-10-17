@@ -6,6 +6,14 @@ export function useLocations() {
     return res;
   };
 
+  const addLocation = async (locationData) => {
+    const res = await $fetch(`/api/v1/locations`, {
+      method: "POST",
+      body: locationData,
+    });
+    return res;
+  };
+
   // const fetchRoleById = async (roleId: string) => {
   //   const res = await $fetch(`/api/v1/roles/${roleId}`, {
   //     method: "GET",
@@ -28,6 +36,7 @@ export function useLocations() {
 
   return {
     getLocations,
+    addLocation,
     // fetchRoleById,
     // updateRoleById,
   };

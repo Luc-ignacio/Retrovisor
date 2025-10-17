@@ -1,9 +1,5 @@
 <template>
-  <Menubar
-    :pt="{
-      root: {},
-    }"
-  >
+  <Menubar>
     <template #start>
       <div class="pl-4">
         <NuxtLink to="/" class="text-xl font-semibold"> Retrovisor </NuxtLink>

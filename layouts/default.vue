@@ -1,7 +1,8 @@
 <template>
-  <div class="flex flex-col min-h-screen bg-slate-200">
+  <div class="flex flex-col min-h-screen bg-gray-200">
     <BaseNavbar />
-    <main>
+
+    <main class="flex flex-col flex-1">
       <slot />
     </main>
   </div>

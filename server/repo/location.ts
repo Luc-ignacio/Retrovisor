@@ -5,6 +5,19 @@ export default class LocationRepository {
     return await prisma.location.findMany();
   }
 
+  async addLocation(locationData: {
+    name: string;
+    description: string;
+    lat: number;
+    long: number;
+    slug: string;
+    userId: string;
+  }) {
+    return await prisma.location.create({
+      data: locationData,
+    });
+  }
+
   // async queryById(roleId: string | undefined) {
   //   return await prisma.role.findUnique({
   //     where: {

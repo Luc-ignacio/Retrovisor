@@ -1,6 +1,6 @@
 <template>
   <div
-    class="container mx-auto mt-16 rounded-lg flex flex-col items-center justify-center min-h-[600px] bg-slate-300 gap-4"
+    class="container mx-auto mt-16 rounded-lg flex flex-col items-center justify-center min-h-[600px] bg-gray-300 gap-4"
   >
     <div class="max-w-4xl text-center">
       <h1 class="text-5xl font-bold">Oh no!</h1>
