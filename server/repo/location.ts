@@ -5,6 +5,14 @@ export default class LocationRepository {
     return await prisma.location.findMany();
   }
 
+  async getLocationBySlug(slug: string) {
+    return await prisma.location.findFirst({
+      where: {
+        slug: slug,
+      },
+    });
+  }
+
   async addLocation(locationData: {
     name: string;
     description: string;

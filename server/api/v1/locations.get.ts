@@ -3,6 +3,16 @@ import LocationRepository from "~/server/repo/location";
 const locationRepo = new LocationRepository();
 
 export default defineEventHandler(async (event) => {
+  if (!event.context.user) {
+    return sendError(
+      event,
+      createError({
+        status: 401,
+        statusMessage: "Unauthorised",
+      })
+    );
+  }
+
   try {
     const res = await locationRepo.getLocations();
     return {

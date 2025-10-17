@@ -1,5 +1,5 @@
 <template>
-  <div class="container max-w-md mx-auto mt-8">
+  <div class="container max-w-md mx-auto mt-9">
     <div class="flex flex-col gap-4">
       <h1 class="text-xl font-medium">Add Location</h1>
 
@@ -187,10 +187,11 @@ const onFormSubmit = async ({ valid, values }) => {
       navigateTo("/dashboard");
     }
   } catch (error) {
+    console.log("ERROR", error);
     toast.add({
       severity: "error",
       summary: "Error",
-      detail: "Failed to add location",
+      detail: error,
       life: 5000,
     });
   } finally {

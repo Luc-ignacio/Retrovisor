@@ -30,6 +30,33 @@
           href="/dashboard/add"
         />
 
+        <Divider
+          v-if="sidebarStore.sidebarItems.length || locationsStore.loading"
+        />
+
+        <div v-if="locationsStore.loading" class="px-2 space-y-2">
+          <Skeleton height="2.5rem" width="100%" borderRadius="8px" />
+          <Skeleton height="2.5rem" width="100%" borderRadius="8px" />
+        </div>
+
+        <div v-else class="flex flex-col">
+          <p
+            v-if="isSidebarOpen && sidebarStore.sidebarItems.length"
+            class="px-4 text-sm mb-1"
+          >
+            Quick Links
+          </p>
+
+          <div v-for="item in sidebarStore.sidebarItems" :key="item.id">
+            <SidebarButton
+              :showLabel="isSidebarOpen"
+              :label="item.label"
+              :icon="item.icon"
+              :href="item.href"
+            />
+          </div>
+        </div>
+
         <Divider />
 
         <div
@@ -62,7 +89,12 @@ const toggleSidebar = () => {
   localStorage.setItem("isSidebarOpen", isSidebarOpen.value.toString());
 };
 
-onMounted(() => {
+// Stores
+const sidebarStore = useSidebarStore();
+const locationsStore = useLocationsStore();
+
+onMounted(async () => {
   isSidebarOpen.value = localStorage.getItem("isSidebarOpen") === "true";
+  await locationsStore.fetchLocations();
 });
 </script>

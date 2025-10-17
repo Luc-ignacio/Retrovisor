@@ -1,6 +1,8 @@
 import LocationRepository from "~/server/repo/location";
 import { z } from "zod";
 import { User } from "better-auth";
+import slugify from "slug";
+import { customAlphabet } from "nanoid";
 
 const locationRepo = new LocationRepository();
 
@@ -39,11 +41,29 @@ export default defineEventHandler(async (event) => {
     );
   }
 
+  const nanoId = customAlphabet("123456789acbdefghijklmnopqrstuvwxyz", 5);
+
   const user = event.context.user as User;
+
+  // Create unique slug
+  let slug = slugify(parsed.data.name);
+
+  let existing = !!(await locationRepo.getLocationBySlug(slug));
+
+  while (existing) {
+    const generatedId = nanoId();
+    const modifiedSlug = `${slug}-${generatedId}`;
+
+    existing = !!(await locationRepo.getLocationBySlug(modifiedSlug));
+
+    if (!existing) {
+      slug = modifiedSlug;
+    }
+  }
 
   const locationData = {
     ...parsed.data,
-    slug: parsed.data.name.replaceAll(" ", "-").toLowerCase(),
+    slug: slug,
     userId: user.id,
   };
 
@@ -51,7 +71,7 @@ export default defineEventHandler(async (event) => {
     const res = await locationRepo.addLocation(locationData);
 
     return {
-      statusMessage: "Successfully added location",
+      statusMessage: "Successfully added locations",
       data: res,
     };
   } catch (e) {

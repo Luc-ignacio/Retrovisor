@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Location {
-  id          Int           @id @default(autoincrement())
+  id          String        @id @default(uuid())
   name        String
   slug        String        @unique
   description String
@@ -25,14 +25,14 @@ model Location {
 }
 
 model LocationLog {
-  id               Int                @id @default(autoincrement())
+  id               String             @id @default(uuid())
   name             String
   description      String?
   startedAt        DateTime
   endedAt          DateTime
   lat              Int
   long             Int
-  locationId       Int
+  locationId       String
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @default(now()) @updatedAt
   Location         Location           @relation(fields: [locationId], references: [id])
@@ -40,16 +40,16 @@ model LocationLog {
 }
 
 model LocationLogImage {
-  id            Int         @id @default(autoincrement())
+  id            String      @id @default(uuid())
   key           String
-  locationLogId Int
+  locationLogId String
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @default(now()) @updatedAt
   LocationLog   LocationLog @relation(fields: [locationLogId], references: [id])
 }
 
 model User {
-  id            String     @id
+  id            String     @id @default(uuid())
   name          String
   email         String
   emailVerified Boolean    @default(false)
@@ -64,7 +64,7 @@ model User {
 }
 
 model Session {
-  id        String   @id
+  id        String   @id @default(uuid())
   expiresAt DateTime
   token     String
   createdAt DateTime @default(now())
@@ -78,7 +78,7 @@ model Session {
 }
 
 model Account {
-  id                    String    @id
+  id                    String    @id @default(uuid())
   accountId             String
   providerId            String
   userId                String
@@ -95,7 +95,7 @@ model Account {
 }
 
 model Verification {
-  id         String   @id
+  id         String   @id @default(uuid())
   identifier String
   value      String
   expiresAt  DateTime
