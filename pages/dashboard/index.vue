@@ -3,12 +3,12 @@
     <i class="pi pi-spin pi-spinner-dotted" style="font-size: 3rem"></i>
   </div>
 
-  <div v-else class="px-8 container mx-auto mt-9 space-y-4">
+  <div v-else class="px-8 mt-9 mb-4 space-y-4">
     <h1 class="text-xl font-medium">Locations</h1>
 
-    <div v-if="locations?.length" class="flex flex-wrap gap-4">
+    <div v-if="locations?.length" class="flex flex-nowrap overflow-auto gap-4">
       <div v-for="location in locations" :key="location.id">
-        <Card class="! w-72">
+        <Card class="!w-72">
           <template #title>{{ location.name }}</template>
           <template #content>
             <p class="m-0">

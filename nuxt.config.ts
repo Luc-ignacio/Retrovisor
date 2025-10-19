@@ -31,6 +31,8 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "nuxt-icon-tw",
     "@prisma/nuxt",
+    "@nuxtjs/color-mode",
+    "nuxt-maplibre",
   ],
 
   primevue: {
@@ -42,6 +44,15 @@ export default defineNuxtConfig({
         },
       },
     },
+  },
+
+  colorMode: {
+    classSuffix: "",
+    preference: "light",
+  },
+
+  tailwindcss: {
+    configPath: "tailwind.config.js",
   },
 
   css: ["primeicons/primeicons.css"],

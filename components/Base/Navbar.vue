@@ -8,13 +8,13 @@
 
     <template #end>
       <div class="flex gap-4 pr-4">
-        <!-- <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2">
           <i class="pi pi-sun" style="font-size: 1.2em"></i>
-          <div @click="toggleDarkMode()" class="flex items-center">
+          <div class="flex items-center">
             <ToggleSwitch v-model="isAppDark" />
           </div>
           <i class="pi pi-moon"></i>
-        </div> -->
+        </div>
 
         <BaseSignInButton />
       </div>
@@ -23,9 +23,19 @@
 </template>
 
 <script lang="ts" setup>
-const isAppDark = ref(true);
+const colorMode = useColorMode();
+const isAppDark = ref(colorMode.value === "dark");
 
-function toggleDarkMode() {
-  document.documentElement.classList.toggle("app-dark");
-}
+watch(isAppDark, (value) => {
+  colorMode.preference = value ? "dark" : "light";
+  document.documentElement.classList.toggle("app-dark", value);
+});
+
+onMounted(() => {
+  document.documentElement.classList.toggle(
+    "app-dark",
+    colorMode.value === "dark"
+  );
+  isAppDark.value = colorMode.value === "dark";
+});
 </script>

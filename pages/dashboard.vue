@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-1">
     <div
-      class="bg-gray-300 transition-all duration-300"
+      class="bg-gray-300 dark:bg-neutral-700 transition-all duration-300 shrink-0"
       :class="{ 'w-64': isSidebarOpen, 'w-16': !isSidebarOpen }"
     >
       <div
@@ -71,8 +71,11 @@
       </div>
     </div>
 
-    <div class="flex-1 bg-gray-200">
-      <NuxtPage />
+    <div class="flex-1 overflow-auto bg-gray-200 dark:bg-neutral-800">
+      <div class="flex flex-col size-full">
+        <NuxtPage />
+        <Map class="flex-1" />
+      </div>
     </div>
   </div>
 </template>

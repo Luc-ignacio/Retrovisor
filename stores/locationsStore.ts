@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useMapStore } from "./mapStore";
 
 export const useLocationsStore = defineStore("useLocationsStore", () => {
   const { getLocations } = useLocations();
@@ -18,8 +19,9 @@ export const useLocationsStore = defineStore("useLocationsStore", () => {
   };
 
   const sidebarStore = useSidebarStore();
+  const mapStore = useMapStore();
 
-  watchEffect(() => {
+  effect(() => {
     if (locations.value) {
       sidebarStore.sidebarItems = locations.value.map((location) => {
         return {
@@ -27,6 +29,15 @@ export const useLocationsStore = defineStore("useLocationsStore", () => {
           label: location.name,
           icon: "tabler:map-pin-filled",
           href: "#",
+        };
+      });
+
+      mapStore.mapPoints = locations.value.map((location) => {
+        return {
+          id: location.id,
+          label: location.name,
+          lat: location.lat,
+          long: location.long,
         };
       });
 
