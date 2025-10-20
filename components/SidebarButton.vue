@@ -8,7 +8,7 @@
       'justify-center': !props.showLabel,
     }"
   >
-    <Icon :name="props.icon" size="24" />
+    <Icon :name="props.icon" size="24" :class="props.iconColor" />
     <p v-if="props.showLabel" class="transition-all">{{ props.label }}</p>
   </NuxtLink>
 </template>
@@ -19,6 +19,7 @@ const props = defineProps<{
   icon: string;
   href: string;
   showLabel: boolean;
+  iconColor?: string;
 }>();
 
 const route = useRoute();

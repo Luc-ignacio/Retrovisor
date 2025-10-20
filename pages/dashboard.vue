@@ -50,9 +50,14 @@
           <div v-for="item in sidebarStore.sidebarItems" :key="item.id">
             <SidebarButton
               :showLabel="isSidebarOpen"
-              :label="item.label"
+              :label="item.name"
               :icon="item.icon"
               :href="item.href"
+              :iconColor="
+                item.location === mapStore.selectedPoint ? 'text-cyan-400' : ''
+              "
+              @mouseenter="mapStore.selectedPoint = item.location"
+              @mouseleave="mapStore.selectedPoint = null"
             />
           </div>
         </div>
@@ -72,7 +77,10 @@
     </div>
 
     <div class="flex-1 overflow-auto bg-gray-200 dark:bg-neutral-800">
-      <div class="flex flex-col size-full">
+      <div
+        class="flex size-full"
+        :class="{ 'flex-col': route.path !== '/dashboard/add' }"
+      >
         <NuxtPage />
         <Map class="flex-1" />
       </div>
@@ -83,7 +91,13 @@
 <script lang="ts" setup>
 import SidebarButton from "~/components/SidebarButton.vue";
 
+const route = useRoute();
+
+// Stores
+const sidebarStore = useSidebarStore();
+const locationsStore = useLocationsStore();
 const authStore = useAuthStore();
+const mapStore = useMapStore();
 
 const isSidebarOpen = ref(true);
 
@@ -91,10 +105,6 @@ const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
   localStorage.setItem("isSidebarOpen", isSidebarOpen.value.toString());
 };
-
-// Stores
-const sidebarStore = useSidebarStore();
-const locationsStore = useLocationsStore();
 
 onMounted(async () => {
   isSidebarOpen.value = localStorage.getItem("isSidebarOpen") === "true";

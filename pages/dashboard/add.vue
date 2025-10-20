@@ -1,5 +1,5 @@
 <template>
-  <div class="container max-w-md mx-auto mt-9">
+  <div class="container max-w-md mx-auto mt-9 px-4">
     <div class="flex flex-col gap-4">
       <h1 class="text-xl font-medium">Add Location</h1>
 

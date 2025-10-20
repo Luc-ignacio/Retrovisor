@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 const colorMode = useColorMode();
-const isAppDark = ref(colorMode.value === "dark");
+const isAppDark = ref(colorMode.value !== "dark");
 
 watch(isAppDark, (value) => {
   colorMode.preference = value ? "dark" : "light";

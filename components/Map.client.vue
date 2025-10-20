@@ -11,10 +11,19 @@
         <Icon
           name="tabler:map-pin-filled"
           size="30"
-          class="text-cyan-400"
-          v-tooltip="{ value: point.label, class: 'text-sm' }"
+          :class="
+            point === mapStore.selectedPoint ? 'text-cyan-400' : 'text-pink-400'
+          "
+          v-tooltip="{ value: point.name, class: 'text-sm' }"
+          @mouseenter="mapStore.selectPointWithoutFlyTo(point)"
+          @mouseleave="mapStore.selectPointWithoutFlyTo(null)"
         />
       </template>
+
+      <MglPopup>
+        <h3 class="text-base font-semibold">{{ point.name }}</h3>
+        <p>{{ point.description }}</p>
+      </MglPopup>
     </MglMarker>
   </MglMap>
 </template>
