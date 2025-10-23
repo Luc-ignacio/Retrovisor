@@ -56,8 +56,8 @@
               :iconColor="
                 item.location === mapStore.selectedPoint ? 'text-cyan-400' : ''
               "
-              @mouseenter="mapStore.selectedPoint = item.location"
-              @mouseleave="mapStore.selectedPoint = null"
+              @mouseenter="mapStore.selectPointWithoutFlyTo(item.location)"
+              @mouseleave="mapStore.selectPointWithoutFlyTo(null)"
             />
           </div>
         </div>

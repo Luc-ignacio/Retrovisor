@@ -59,48 +59,24 @@
         >
       </div>
 
-      <div class="flex flex-col gap-1">
-        <FloatLabel variant="in">
-          <InputNumber
-            name="lat"
-            v-model="form.lat"
-            :disabled="isSubmitting"
-            inputId="minmaxfraction"
-            :minFractionDigits="0"
-            :maxFractionDigits="6"
-            fluid
+      <div>
+        <p>
+          Drag the
+          <Icon
+            name="tabler:map-pin-filled"
+            size="24"
+            class="text-orange-400 mb-2"
           />
-          <label for="lat">Latitude</label>
-        </FloatLabel>
-        <Message
-          v-if="$form.lat?.invalid"
-          severity="error"
-          size="small"
-          variant="simple"
-          >{{ $form.lat.error?.message }}</Message
-        >
+          marker to your desired location
+        </p>
+
+        <p>Or click on the map.</p>
       </div>
 
-      <div class="flex flex-col gap-1">
-        <FloatLabel variant="in">
-          <InputNumber
-            name="long"
-            v-model="form.long"
-            :disabled="isSubmitting"
-            inputId="minmaxfraction"
-            :minFractionDigits="0"
-            :maxFractionDigits="6"
-            fluid
-          />
-          <label for="long">Longitude</label>
-        </FloatLabel>
-        <Message
-          v-if="$form.long?.invalid"
-          severity="error"
-          size="small"
-          variant="simple"
-          >{{ $form.long.error?.message }}</Message
-        >
+      <div class="text-sm text-neutral-500">
+        Current Location:
+        <li class="ml-4">Lat: {{ form.lat }}</li>
+        <li class="ml-4">Long: {{ form.long }}</li>
       </div>
 
       <div class="flex items-center justify-end gap-4">
@@ -133,21 +109,27 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { zodResolver } from "@primevue/forms/resolvers/zod";
 import { z } from "zod";
 const { addLocation } = useLocations();
 const toast = useToast();
 const router = useRouter();
+const mapStore = useMapStore();
 
 // Form
 const isSubmitting = ref(false);
 
-const form = ref({
+const form = ref<{
+  name: String | undefined;
+  description: String | undefined;
+  lat: Number | undefined;
+  long: Number | undefined;
+}>({
   name: "",
   description: "",
-  lat: "",
-  long: "",
+  lat: undefined,
+  long: undefined,
 });
 
 const resolver = ref(
@@ -166,11 +148,11 @@ const resolver = ref(
   )
 );
 
-const onFormSubmit = async ({ valid, values }) => {
+const onFormSubmit = async ({ valid }) => {
   isSubmitting.value = true;
   try {
     if (valid) {
-      const res = await addLocation(values);
+      const res = await addLocation(form.value);
       console.log("res", res);
 
       toast.add({
@@ -182,9 +164,6 @@ const onFormSubmit = async ({ valid, values }) => {
 
       // Reset form state
       initialFormData.value = JSON.stringify(buildFormSnapshot());
-
-      // Send user back to Dashboard
-      navigateTo("/dashboard");
     }
   } catch (error) {
     console.log("ERROR", error);
@@ -195,6 +174,8 @@ const onFormSubmit = async ({ valid, values }) => {
       life: 5000,
     });
   } finally {
+    // Send user back to Dashboard
+    navigateTo("/dashboard");
     isSubmitting.value = false;
   }
 };
@@ -204,10 +185,10 @@ const initialFormData = ref("");
 
 const buildFormSnapshot = () => {
   return {
-    name: form.value.name,
-    description: form.value.description,
-    lat: form.value.lat,
-    long: form.value.long,
+    name: form.value?.name,
+    description: form.value?.description,
+    lat: form.value?.lat,
+    long: form.value?.long,
   };
 };
 
@@ -219,7 +200,26 @@ const formHasChanges = computed(
   () => currentFormData.value !== initialFormData.value
 );
 
+//Update coordinates on drag
+effect(() => {
+  if (mapStore.draggablePoint) {
+    (form.value.lat = mapStore.draggablePoint.lat),
+      (form.value.long = mapStore.draggablePoint.long);
+  }
+});
+
 onMounted(async () => {
+  mapStore.draggablePoint = {
+    id: 1,
+    name: "Draggable Point",
+    description: "Draggable point",
+    lat: -27.9988,
+    long: 152.040784,
+  };
+
+  form.value.lat = mapStore.draggablePoint.lat;
+  form.value.long = mapStore.draggablePoint.long;
+
   initialFormData.value = JSON.stringify(buildFormSnapshot());
 });
 
@@ -232,8 +232,8 @@ onBeforeRouteLeave(() => {
     if (!confirm) {
       return false;
     }
-  } else {
-    return true;
   }
+  mapStore.draggablePoint = null;
+  return true;
 });
 </script>
