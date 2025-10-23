@@ -1,3 +1,4 @@
+import { User } from "better-auth";
 import LocationRepository from "~/server/repo/location";
 
 const locationRepo = new LocationRepository();
@@ -13,8 +14,10 @@ export default defineEventHandler(async (event) => {
     );
   }
 
+  const user = event.context.user as User;
+
   try {
-    const res = await locationRepo.getLocations();
+    const res = await locationRepo.getLocations(user.id);
     return {
       statusMessage: "Successfully retrieved locations",
       data: res,

@@ -1,8 +1,12 @@
 import prisma from "~/server/lib/prisma";
 
 export default class LocationRepository {
-  async getLocations() {
-    return await prisma.location.findMany();
+  async getLocations(userId: string) {
+    return await prisma.location.findMany({
+      where: {
+        userId: userId,
+      },
+    });
   }
 
   async getLocationBySlug(slug: string) {
