@@ -39,6 +39,7 @@
     <MglMarker
       :coordinates="[mapStore.draggablePoint.long, mapStore.draggablePoint.lat]"
       draggable
+      class-name="z-50"
       v-if="mapStore.draggablePoint"
       @update:coordinates="updateDraggablePoint"
     >

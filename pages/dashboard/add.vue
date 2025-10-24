@@ -1,5 +1,5 @@
 <template>
-  <div class="container max-w-md mx-auto mt-9 px-4">
+  <div class="container max-w-md mx-auto mt-9 px-4 space-y-4">
     <div class="flex flex-col gap-4">
       <h1 class="text-xl font-medium">Add Location</h1>
 
@@ -59,24 +59,21 @@
         >
       </div>
 
-      <div>
-        <p>
+      <div class="flex flex-col gap-1">
+        <p class="text-xs text-neutral-500">
+          Current coordinates: [{{ form.lat }}, {{ form.long }}]
+        </p>
+
+        <p class="text-sm">
           Drag the
           <Icon
             name="tabler:map-pin-filled"
-            size="24"
+            size="20"
             class="text-orange-400 mb-2"
           />
-          marker to your desired location
+          marker to your desired location, click on the map or search a location
+          below.
         </p>
-
-        <p>Or click on the map.</p>
-      </div>
-
-      <div class="text-sm text-neutral-500">
-        Current Location:
-        <li class="ml-4">Lat: {{ form.lat }}</li>
-        <li class="ml-4">Long: {{ form.long }}</li>
       </div>
 
       <div class="flex items-center justify-end gap-4">
@@ -106,6 +103,8 @@
         </Button>
       </div>
     </Form>
+
+    <PlaceSearch @SetLocation="setSelectedLocation" />
   </div>
 </template>
 
@@ -148,6 +147,20 @@ const resolver = ref(
   )
 );
 
+const setSelectedLocation = (selectedLocation) => {
+  mapStore.draggablePoint = {
+    id: selectedLocation.place_id,
+    name: selectedLocation.display_name,
+    description: "Selected location",
+    lat: selectedLocation.lat,
+    long: selectedLocation.lon,
+    centerMap: true,
+  };
+
+  (form.value.name = selectedLocation.display_name),
+    (form.value.description = "");
+};
+
 const onFormSubmit = async ({ valid }) => {
   isSubmitting.value = true;
   try {
@@ -164,6 +177,9 @@ const onFormSubmit = async ({ valid }) => {
 
       // Reset form state
       initialFormData.value = JSON.stringify(buildFormSnapshot());
+
+      // Send user back to Dashboard
+      navigateTo("/dashboard");
     }
   } catch (error) {
     console.log("ERROR", error);
@@ -174,8 +190,6 @@ const onFormSubmit = async ({ valid }) => {
       life: 5000,
     });
   } finally {
-    // Send user back to Dashboard
-    navigateTo("/dashboard");
     isSubmitting.value = false;
   }
 };
@@ -213,8 +227,8 @@ onMounted(async () => {
     id: 1,
     name: "Draggable Point",
     description: "Draggable point",
-    lat: -27.9988,
-    long: 152.040784,
+    lat: -27.998269,
+    long: 153.414304,
   };
 
   form.value.lat = mapStore.draggablePoint.lat;
