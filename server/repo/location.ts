@@ -9,10 +9,14 @@ export default class LocationRepository {
     });
   }
 
-  async getLocationBySlug(slug: string) {
+  async getLocationBySlug(userId: string, slug: string) {
     return await prisma.location.findFirst({
       where: {
+        userId: userId,
         slug: slug,
+      },
+      include: {
+        LocationLog: true,
       },
     });
   }

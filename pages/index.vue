@@ -1,8 +1,8 @@
 <template>
   <div
-    class="container mx-auto mt-16 rounded-lg flex flex-col items-center justify-center min-h-[600px] bg-gray-300 dark:bg-neutral-700 gap-4"
+    class="container mx-auto mt-16 rounded-lg flex flex-col items-center justify-center min-h-[500px] bg-gray-300 dark:bg-neutral-700 gap-4"
   >
-    <div class="max-w-4xl text-center">
+    <div class="max-w-3xl text-center">
       <h1 class="text-5xl font-bold">Retrovisor</h1>
       <p class="py-6">
         Capture your journeys, reflect on your paths, and keep your memories

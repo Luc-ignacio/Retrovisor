@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { useMapStore } from "./mapStore";
 import type { Location } from "@prisma/client";
+import type { MapPoint } from "~/lib/types";
 
 export const useLocationsStore = defineStore("useLocationsStore", () => {
   const { getLocations } = useLocations();
@@ -24,17 +25,28 @@ export const useLocationsStore = defineStore("useLocationsStore", () => {
 
   effect(() => {
     if (locations.value) {
-      sidebarStore.sidebarItems = locations.value.map((location) => {
-        return {
+      const mapPoints: MapPoint[] = [];
+      const sidebarItems: SidebarItem[] = [];
+
+      locations.value.forEach((location) => {
+        const mapPoint = createPointFromLocation(location);
+
+        mapPoints.push(mapPoint);
+
+        sidebarItems.push({
           id: location.id,
           name: location.name,
           icon: "tabler:map-pin-filled",
-          href: "#",
-          location,
-        };
+          to: {
+            name: "dashboard-location-slug",
+            params: { slug: location.slug },
+          },
+          mapPoint,
+        });
       });
 
-      mapStore.mapPoints = locations.value;
+      sidebarStore.sidebarItems = sidebarItems;
+      mapStore.mapPoints = mapPoints;
 
       sidebarStore.loading = loading.value;
     }

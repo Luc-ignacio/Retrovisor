@@ -12,6 +12,7 @@
           <InputText
             v-model="q"
             name="q"
+            size="small"
             placeholder="Search for a location"
             fluid
             :disabled="isSubmitting"
@@ -29,13 +30,14 @@
       <Button
         type="submit"
         label="Search"
+        size="small"
         class="!shrink-0 !self-start"
         :loading="isSubmitting"
         loading-icon="pi pi-spinner-dotted pi-spin"
       />
     </Form>
 
-    <div class="flex flex-col gap-2 pb-10 max-h-[565px] overflow-auto">
+    <div class="flex flex-col gap-2 pb-10">
       <Card v-for="result in searchResults" key="result.place_id">
         <template #subtitle>
           <div class="space-y-2">

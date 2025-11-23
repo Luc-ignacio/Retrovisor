@@ -12,8 +12,8 @@
         }"
         @click="toggleSidebar"
       >
-        <Icon v-if="isSidebarOpen" name="tabler:chevron-left" size="24" />
-        <Icon v-else="isSidebarOpen" name="tabler:chevron-right" size="24" />
+        <Icon v-if="isSidebarOpen" name="tabler:chevron-left" size="20" />
+        <Icon v-else="isSidebarOpen" name="tabler:chevron-right" size="20" />
       </div>
 
       <div class="flex flex-col">
@@ -42,7 +42,7 @@
         <div v-else class="flex flex-col">
           <p
             v-if="isSidebarOpen && sidebarStore.sidebarItems.length"
-            class="px-4 text-sm mb-1"
+            class="px-4 text-xs mb-1"
           >
             Quick Links
           </p>
@@ -52,11 +52,15 @@
               :showLabel="isSidebarOpen"
               :label="item.name"
               :icon="item.icon"
-              :href="item.href"
+              :to="item.to"
               :iconColor="
-                item.location === mapStore.selectedPoint ? 'text-cyan-400' : ''
+                isPointSelected(item.mapPoint, mapStore.selectedPoint)
+                  ? 'text-cyan-400'
+                  : ''
               "
-              @mouseenter="mapStore.selectPointWithoutFlyTo(item.location)"
+              @mouseenter="
+                mapStore.selectPointWithoutFlyTo(item.mapPoint ?? null)
+              "
               @mouseleave="mapStore.selectPointWithoutFlyTo(null)"
             />
           </div>
@@ -70,8 +74,8 @@
           v-tooltip="{ value: isSidebarOpen ? undefined : 'Sign Out' }"
           @click="authStore.signOut"
         >
-          <i class="pi pi-sign-out" style="font-size: 1.2rem" />
-          <p v-if="isSidebarOpen">Sign Out</p>
+          <i class="pi pi-sign-out" style="font-size: 1rem" />
+          <p v-if="isSidebarOpen" class="text-sm">Sign Out</p>
         </div>
       </div>
     </div>

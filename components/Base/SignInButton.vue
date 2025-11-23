@@ -3,6 +3,7 @@
     v-if="!authStore.isLoading && authStore.user"
     :label="authStore.user?.name"
     @click="togglePopover"
+    size="small"
   >
     <template #icon>
       <div v-if="authStore.user.image">

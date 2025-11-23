@@ -19,7 +19,7 @@
             name="tabler:map-pin-filled"
             size="30"
             :class="
-              point === mapStore.selectedPoint
+              isPointSelected(point, mapStore.selectedPoint)
                 ? 'text-cyan-400'
                 : 'text-pink-400'
             "
@@ -32,6 +32,13 @@
       <MglPopup>
         <h3 class="text-base font-semibold">{{ point.name }}</h3>
         <p>{{ point.description }}</p>
+        <div class="flex justify-end mt-2">
+          <Button v-if="point.to" size="small" outlined>
+            <NuxtLink :to="point.to">
+              {{ point.toLabel }}
+            </NuxtLink>
+          </Button>
+        </div>
       </MglPopup>
     </MglMarker>
 

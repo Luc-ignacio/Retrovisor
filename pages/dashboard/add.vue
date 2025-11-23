@@ -1,9 +1,9 @@
 <template>
   <div class="container max-w-md mx-auto mt-9 px-4 space-y-4">
-    <div class="flex flex-col gap-4">
-      <h1 class="text-xl font-medium">Add Location</h1>
+    <div class="flex flex-col gap-2">
+      <h1 class="text-lg font-medium">Add Location</h1>
 
-      <p>
+      <p class="text-sm">
         A location is a place you have traveled or will travel to. It can be a
         country, state, city or point of interest. You can add specific times
         you visited this location after adding it.
@@ -22,6 +22,7 @@
           <InputText
             name="name"
             type="text"
+            size="small"
             v-model="form.name"
             :disabled="isSubmitting"
             fluid
@@ -42,6 +43,7 @@
           <Textarea
             name="description"
             type="textarea"
+            size="small"
             v-model="form.description"
             :disabled="isSubmitting"
             rows="5"
@@ -80,19 +82,21 @@
         <Button
           variant="outlined"
           severity="secondary"
+          size="small"
           label="Cancel"
           :loading="isSubmitting"
           loading-icon="pi pi-spinner-dotted pi-spin"
           @click="router.back()"
         >
           <template #icon>
-            <Icon name="tabler:arrow-left" size="24" />
+            <Icon name="tabler:arrow-left" size="20" />
           </template>
         </Button>
 
         <Button
           type="submit"
           severity="primary"
+          size="small"
           label="Add"
           :loading="isSubmitting"
           loading-icon="pi pi-spinner-dotted pi-spin"
